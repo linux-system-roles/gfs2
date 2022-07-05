@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: MIT
+---
+- name: Ensure ansible_facts used by role
+  setup:
+    gather_subset: "{{ __gfs2_required_facts_subsets }}"
+  when: __gfs2_required_facts |
+    difference(ansible_facts.keys() | list) | length > 0
+
+- name: Determine if system is ostree and set flag
+  when: not __gfs2_is_ostree is defined
+  block:
+    - name: Check if system is ostree
+      stat:
+        path: /run/ostree-booted
+      register: __ostree_booted_stat
+
+    - name: Set flag to indicate system is ostree
+      set_fact:
+        __gfs2_is_ostree: "{{ __ostree_booted_stat.stat.exists }}"
+
+- name: Find environment-specific tasks to enable repositories
+  ansible.builtin.set_fact:
+    __gfs2_enable_repo_tasks_file: \
+      "{{ __gfs2_enable_repo_tasks_file_candidate }}"
+  loop:
+    - "{{ ansible_facts['os_family'] }}.yml"
+    - "{{ ansible_facts['distribution'] }}.yml"
+    - >-
+      {{ ansible_facts['distribution'] ~ '_' ~
+      ansible_facts['distribution_major_version'] }}.yml
+    - >-
+      {{ ansible_facts['distribution'] ~ '_' ~
+      ansible_facts['distribution_version'] }}.yml
+  vars:
+    __gfs2_enable_repo_tasks_file_candidate: \
+      "{{ role_path }}/tasks/enable-repositories/{{ item }}"
+  when:
+    - gfs2_enable_repos | bool
+    - __gfs2_enable_repo_tasks_file_candidate is file
+
+- name: Run environment-specific tasks to enable repositories
+  ansible.builtin.include_tasks: "{{ __gfs2_enable_repo_tasks_file }}"
+  when:
+    - gfs2_enable_repos | bool
+    - __gfs2_enable_repo_tasks_file is defined
+
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{ __gfs2_packages }}"
+    state: present
+    use: "{{ (__gfs2_is_ostree | d(false)) |
+              ternary('ansible.posix.rhel_rpm_ostree', omit) }}"
+  any_errors_fatal: true

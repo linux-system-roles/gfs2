@@ -1,0 +1,138 @@
+# SPDX-License-Identifier: MIT
+---
+argument_specs:
+  main:
+    short_description: The gfs2 role.
+    description: >
+      The gfs2 role allows you to create gfs2 file systems in a pacemaker
+      cluster managed using `pcs`. Before this role is invoked, the cluster
+      must be set up (perhaps using the `ha_cluster` role) and fencing must be
+      enabled.
+
+      This role will install necessary packages, set up the dlm and lvmlockd
+      cluster resources, create the LVM volume groups and logical volumes, and
+      create the gfs2 file system and cluster resources with the necessary
+      resource constraints.
+
+      If any of the cluster resources already exist, make sure that the
+      `gfs2_resource_name_*` variables are set to the names of the resources so
+      that it can detect them.
+
+      The role errs on the side of caution when creating the file system. If
+      the file system does not yet exist, the first time this role runs it will
+      only create the gfs2 file system on the shared logical volume if an
+      existing file system signature is not detected. You may need to inspect
+      the device's contents and use `wipefs` if appropriate before continuing.
+    options:
+      gfs2_enable_repos:
+        type: bool
+        required: false
+        description: >
+          Whether to enable the repositories required to install the required
+          packages. Defaults to `true`.
+      gfs2_cluster_name:
+        type: str
+        required: true
+        description: >
+          The name of the cluster. See the mkfs.gfs2(8) man page for details.
+      gfs2_resource_name_lvmlockd:
+        type: str
+        required: false
+        description: >
+          The name of the lvmlockd resource in the cluster. This defaults to
+          'lvm_locking'.
+      gfs2_resource_name_dlm:
+        type: str
+        required: true
+        description: >
+          The name of the dlm_controld resource in the cluster. This defaults
+          to 'dlm'.
+      gfs2_group_name_locking:
+        type: str
+        required: true
+        description: >
+          The name of the DLM/LVM locking resource group in the cluster. This
+          defaults to 'locking'.
+      gfs2_file_systems:
+        type: list
+        elements: dict
+        required: true
+        description: >
+          A list of gfs2 file system specifications.
+        options:
+          name:
+            type: str
+            required: true
+            description: >
+              The file system name. See the mkfs.gfs2(8) man page for details.
+          state:
+            type: str
+            required: false
+            choices:
+              - enabled
+              - disabled
+            description: >
+              The intended state of the gfs2 file system. Defaults to
+              'enabled'.  'enabled' and 'disabled' map to the state of the
+              Filesystem resource in the cluster, effectively declaring whether
+              the gfs2 file system is mounted or unmounted. In both cases, the
+              file system resources will be created if they do not already exist.
+          journals:
+            type: int
+            required: false
+            description: >
+              The number of gfs2 journals (max. number of mounters). This
+              defaults to the number of hosts targeted by the play.
+          resource_name_fs:
+            type: str
+            required: false
+            description: >
+              The name of the gfs2 Filesystem resource in the cluster. Defaults
+              to the value of `name`.
+          group_name_fs:
+            type: str
+            required: false
+            description: >
+              The name of the gfs2/LVM resource group in the cluster. Defaults
+              to `<name>-group`.
+          pvs:
+            type: list
+            elements: path
+            required: true
+            description: >
+              A list of shared block devices to use as lvm physical volumes.
+          vg:
+            type: str
+            required: true
+            description: >
+              The name of the shared volume group.
+          lv:
+            type: str
+            required: true
+            description: >
+              The name of the shared logical volume.
+          resource_name_lv:
+            type: str
+            required: false
+            description: >
+              The name of the shared LV activation resource in the cluster.
+              Defaults to `vg-lv`.
+          mount_point:
+            type: path
+            required: true
+            description: >
+              The path to the mount point (directory). It will be created if it
+              does not exist.
+          mount_options:
+            type: list
+            elements: str
+            required: false
+            description: >
+              gfs2 mount options. See the gfs2(5) man page.
+          lv_size:
+            type: str
+            required: true
+            description: >
+              The size of the shared logical volume as required by `lvcreate
+              --size`. Note that using dynamic values such as 100%FREE is not
+              idempotent and it is better to use exact values such as 100G.

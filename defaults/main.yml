@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: MIT
+---
+# Whether to enable the repositories required to install the required
+# packages. Defaults to `true`.
+gfs2_enable_repos: true
+
+# Default lvmlockd resource name
+gfs2_resource_name_lvmlockd: lvm_locking
+
+# Default dlm resource name
+gfs2_resource_name_dlm: dlm
+
+# Default locking group name
+gfs2_group_name_locking: locking
+
+# File system defaults
+gfs2_fs_defaults:
+  # Default number of journals is the number of hosts
+  journals: "{{ ansible_play_hosts_all | length }}"
+  state: enabled
+
+# For testing only
+_gfs2_test_allow_stonith_disabled: false

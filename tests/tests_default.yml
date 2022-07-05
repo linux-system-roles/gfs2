@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: MIT
+---
+- name: Basic usability test
+  hosts: all
+  gather_facts: false
+  vars:
+    gfs2_cluster_name: gfs2_test_cluster
+    gfs2_file_systems: []
+    _gfs2_test_allow_stonith_disabled: true
+  roles:
+    - linux-system-roles.gfs2

@@ -1,0 +1,106 @@
+# SPDX-License-Identifier: MIT
+---
+- name: Check the cluster quorum policy
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - property
+      - config
+      - no-quorum-policy
+  register: no_quorum_policy
+  changed_when: false
+  any_errors_fatal: true
+
+- name: Set the cluster quorum policy to 'freeze'
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - property
+      - set
+      - no-quorum-policy=freeze
+  when: "'no-quorum-policy: freeze' not in no_quorum_policy.stdout"
+  run_once: true
+  changed_when: true
+
+- name: Check whether the dlm resource exists
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - resource
+      - status
+      - "{{ gfs2_resource_name_dlm }}"
+  register: dlm_resource_exists
+  failed_when: false
+  changed_when: false
+
+- name: Create dlm resource
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - resource
+      - create
+      - "{{ gfs2_resource_name_dlm }}"
+      - --group
+      - "{{ gfs2_group_name_locking }}"
+      - ocf:pacemaker:controld
+      - "allow_stonith_disabled={{ _gfs2_test_allow_stonith_disabled }}"
+      - op
+      - monitor
+      - interval=30s
+      - on-fail=fence
+      - --wait
+  when: dlm_resource_exists.rc != 0
+  run_once: true
+  changed_when: true
+
+- name: Clone locking resource group
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - resource
+      - clone
+      - "{{ gfs2_group_name_locking }}"
+      - interleave=true
+      - --wait
+  register: locking_clone_result
+  failed_when:
+    - locking_clone_result.rc != 0
+    - "'already been cloned' not in locking_clone_result.stderr"
+  changed_when: locking_clone_result.rc == 0
+  run_once: true
+
+- name: Check whether the lvmlockd resource exists
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - resource
+      - status
+      - "{{ gfs2_resource_name_lvmlockd }}"
+  register: lockd_resource_exists
+  failed_when: false
+  changed_when: false
+
+- name: Create lvmlockd resource
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - resource
+      - create
+      - "{{ gfs2_resource_name_lvmlockd }}"
+      - --group
+      - "{{ gfs2_group_name_locking }}"
+      - ocf:heartbeat:lvmlockd
+      - op
+      - monitor
+      - interval=30s
+      - on-fail=fence
+      - --wait
+  when: lockd_resource_exists.rc != 0
+  run_once: true
+  changed_when: true
+
+- name: Configure file system-specific resources
+  ansible.builtin.include_tasks: fs.yml
+  loop: "{{ gfs2_file_systems }}"
+  loop_control:
+    loop_var: fs_spec

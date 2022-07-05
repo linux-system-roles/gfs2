@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: MIT
+---
+- name: List active RHEL repositories
+  ansible.builtin.command:
+    cmd: dnf repolist
+  register: __gfs2_repolist
+  changed_when: false
+  check_mode: false
+
+- name: Enable RHEL repositories
+  ansible.builtin.command: >-
+    subscription-manager repos --enable {{ item.id | quote }}
+  loop: "{{ __gfs2_repos }}"
+  when: item.name not in __gfs2_repolist.stdout
+  changed_when: item.name not in __gfs2_repolist.stdout

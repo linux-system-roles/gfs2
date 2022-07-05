@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: MIT
+---
+- name: Find unused disks in the system
+  find_unused_disk:
+    min_size: "{{ min_size | d(omit) }}"
+    max_return: "{{ max_return | d(omit) }}"
+  register: unused
+  changed_when: false
+  failed_when:
+    - ("Unable to find unused disk" in unused.disks) or
+      (unused.disks | length < disks_needed | d(1))
