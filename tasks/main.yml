@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: MIT
+---
+- name: Check for an active stonith resource
+  ansible.builtin.command:
+    argv:
+      - pcs
+      - stonith
+      - status
+  register: stonith_status
+  run_once: true
+  changed_when: false
+  failed_when:
+    - stonith_status.rc != 0
+      or "Started" not in stonith_status.stdout
+  when: not _gfs2_test_allow_stonith_disabled
+
+- name: Install required packages
+  ansible.builtin.include_tasks: install-packages.yml
+
+- name: Setup cluster
+  ansible.builtin.include_tasks: setup-cluster.yml
+  when: gfs2_file_systems | length > 0
