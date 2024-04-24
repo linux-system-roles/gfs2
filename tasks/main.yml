@@ -1,5 +1,11 @@
 # SPDX-License-Identifier: MIT
 ---
+- name: Set platform/version specific variables
+  ansible.builtin.include_tasks: set_vars.yml
+
+- name: Install required packages
+  ansible.builtin.include_tasks: install-packages.yml
+
 - name: Check for an active stonith resource
   ansible.builtin.command:
     argv:
@@ -13,9 +19,6 @@
     - stonith_status.rc != 0
       or "Started" not in stonith_status.stdout
   when: not _gfs2_test_allow_stonith_disabled
-
-- name: Install required packages
-  ansible.builtin.include_tasks: install-packages.yml
 
 - name: Setup cluster
   ansible.builtin.include_tasks: setup-cluster.yml
