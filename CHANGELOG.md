@@ -1,6 +1,13 @@
 Changelog
 =========
 
+[0.0.2] - 2024-04-25
+--------------------
+
+### Other Changes
+
+- test: do not enable repos on RedHat systems (#6)
+
 [0.0.1] - 2024-04-25
 --------------------
 
