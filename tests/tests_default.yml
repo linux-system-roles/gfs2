@@ -2,10 +2,12 @@
 ---
 - name: Basic usability test
   hosts: all
-  gather_facts: false
+  # argument validation requires facts
+  gather_facts: true
   vars:
     gfs2_cluster_name: gfs2_test_cluster
     gfs2_file_systems: []
     _gfs2_test_allow_stonith_disabled: true
+    gfs2_enable_repos: "{{ ansible_facts['distribution'] != 'RedHat' }}"
   roles:
     - linux-system-roles.gfs2

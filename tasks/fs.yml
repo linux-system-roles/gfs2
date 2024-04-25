@@ -118,7 +118,6 @@
       changed_when: false
       failed_when: not lv_path.stat.exists
       any_errors_fatal: true
-      become: true
 
     - name: Create mount point
       ansible.builtin.file:
@@ -126,7 +125,6 @@
         state: directory
         mode: "0755"
       any_errors_fatal: true
-      become: true
 
     - name: Check whether the gfs2 file system resource exists
       ansible.builtin.command:
