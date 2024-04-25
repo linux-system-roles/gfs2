@@ -2,10 +2,12 @@
 ---
 - name: Basic usability test
   hosts: all
-  become: true
+  # argument validation requires facts
+  gather_facts: true
   vars:
     common_cluster_name: testcluster
     mount_point: /mnt/test
+    gfs2_enable_repos: "{{ ansible_facts['distribution'] != 'RedHat' }}"
   tasks:
     - name: Skip this test if test system does not support
       meta: end_host
