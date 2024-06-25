@@ -15,12 +15,16 @@ galaxy_info:
         - "8"
         - "9"
   galaxy_tags:
-    - hacluster
-    - pacemaker
     - corosync
     - dlm
-    - lvm
-    - gfs2
-    - sharedstorage
+    - el8
+    - el9
+    - el10
+    - fedora
     - filesystem
+    - gfs2
+    - hacluster
+    - lvm
+    - pacemaker
+    - sharedstorage
 dependencies: []
