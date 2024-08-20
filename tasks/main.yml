@@ -3,6 +3,13 @@
 - name: Set platform/version specific variables
   ansible.builtin.include_tasks: set_vars.yml
 
+- name: Check if role is supported on current architecture
+  fail:
+    msg: >-
+      The role is not supported on architecture
+      {{ ansible_facts["architecture"] }}
+  when: ansible_facts["architecture"] in ["aarch64"]
+
 - name: Install required packages
   ansible.builtin.include_tasks: install-packages.yml
 

@@ -7,6 +7,7 @@ __gfs2_packages:
   - gfs2-utils
 # ansible_facts required by the role
 __gfs2_required_facts:
+  - architecture
   - distribution
   - distribution_major_version
   - distribution_version

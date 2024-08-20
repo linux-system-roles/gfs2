@@ -9,5 +9,15 @@
     gfs2_file_systems: []
     _gfs2_test_allow_stonith_disabled: true
     gfs2_enable_repos: "{{ ansible_facts['distribution'] != 'RedHat' }}"
-  roles:
-    - linux-system-roles.gfs2
+  tasks:
+    - name: Run test
+      block:
+        - name: Run the role
+          include_role:
+            name: linux-system-roles.gfs2
+      rescue:
+        - name: Check role error on unsupported arch
+          assert:
+            that: __msg in ansible_failed_result.msg
+          vars:
+            __msg: The role is not supported on architecture
