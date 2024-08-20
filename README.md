@@ -6,8 +6,16 @@ Configure and manage the Global File System 2 (gfs2), a cluster file system in a
 
 ## Supported Distributions
 
-* RHEL-8+, CentOS-8+
+* RHEL-8, RHEL-9, CentOS-8, CentOS-9
 * Fedora
+
+NOTE: gfs2 is not supported in EL10.
+
+### Architectures
+
+The role is not supported on these architectures:
+
+* aarch64
 
 ## Requirements
 
