@@ -136,7 +136,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="toc-title">Contents</h1>
 <ul>
 <li><a href="#supported-distributions"
-id="toc-supported-distributions">Supported Distributions</a></li>
+id="toc-supported-distributions">Supported Distributions</a>
+<ul>
+<li><a href="#architectures"
+id="toc-architectures">Architectures</a></li>
+</ul></li>
 <li><a href="#requirements" id="toc-requirements">Requirements</a>
 <ul>
 <li><a href="#collection-requirements"
@@ -166,8 +170,14 @@ Information</a></li>
 system in a pacemaker cluster.</p>
 <h1 id="supported-distributions">Supported Distributions</h1>
 <ul>
-<li>RHEL-8+, CentOS-8+</li>
+<li>RHEL-8, RHEL-9, CentOS-8, CentOS-9</li>
 <li>Fedora</li>
+</ul>
+<p>NOTE: gfs2 is not supported in EL10.</p>
+<h2 id="architectures">Architectures</h2>
+<p>The role is not supported on these architectures:</p>
+<ul>
+<li>aarch64</li>
 </ul>
 <h1 id="requirements">Requirements</h1>
 <p>You must have a working HA cluster.</p>
