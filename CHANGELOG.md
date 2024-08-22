@@ -1,6 +1,21 @@
 Changelog
 =========
 
+[1.0.0] - 2024-08-22
+--------------------
+
+### New Features
+
+- feat: role does not work on el10, aarch64 (#25)
+
+### Other Changes
+
+- ci: Add tft plan and workflow (#19)
+- ci: Update fmf plan to add a separate job to prepare managed nodes (#21)
+- ci: Bump sclorg/testing-farm-as-github-action from 2 to 3 (#22)
+- ci: Add workflow for ci_test bad, use remote fmf plan (#23)
+- ci: Fix missing slash in ARTIFACTS_URL (#24)
+
 [0.0.4] - 2024-07-02
 --------------------
 
