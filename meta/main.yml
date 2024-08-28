@@ -19,6 +19,7 @@ galaxy_info:
     - dlm
     - el8
     - el9
+    - el10
     - fedora
     - filesystem
     - gfs2
