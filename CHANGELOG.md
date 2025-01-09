@@ -1,6 +1,15 @@
 Changelog
 =========
 
+[1.0.3] - 2025-01-09
+--------------------
+
+### Other Changes
+
+- ci: bump codecov/codecov-action from 4 to 5 (#35)
+- ci: Use Fedora 41, drop Fedora 39 (#36)
+- ci: Use Fedora 41, drop Fedora 39 - part two (#37)
+
 [1.0.2] - 2024-11-19
 --------------------
 
