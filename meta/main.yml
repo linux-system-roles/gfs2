@@ -19,7 +19,8 @@ galaxy_info:
     - dlm
     - el8
     - el9
-    - fedora
+    - fedora40
+    - fedora41
     - filesystem
     - gfs2
     - hacluster
