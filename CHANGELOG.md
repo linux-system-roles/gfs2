@@ -1,6 +1,43 @@
 Changelog
 =========
 
+[1.0.4] - 2025-11-17
+--------------------
+
+### Bug Fixes
+
+- fix: cannot use community-general version 12 - no py27 and py36 support (#70)
+
+### Other Changes
+
+- ci: ansible-plugin-scan is disabled for now (#39)
+- ci: bump ansible-lint to v25; provide collection requirements for ansible-lint (#42)
+- ci: Check spelling with codespell (#43)
+- ci: Add test plan that runs CI tests and customize it for each role (#44)
+- ci: In test plans, prefix all relate variables with SR_ (#45)
+- ci: Fix bug with ARTIFACTS_URL after prefixing with SR_ (#46)
+- ci: several changes related to new qemu test, ansible-lint, python versions, ubuntu versions (#47)
+- ci: use tox-lsr 3.6.0; improve qemu test logging (#48)
+- ci: skip storage scsi, nvme tests in github qemu ci (#49)
+- ci: bump sclorg/testing-farm-as-github-action from 3 to 4 (#50)
+- ci: bump tox-lsr to 3.8.0; rename qemu/kvm tests (#51)
+- ci: Add Fedora 42; use tox-lsr 3.9.0; use lsr-report-errors for qemu tests (#52)
+- ci: Add support for bootc end-to-end validation tests (#53)
+- ci: Use ansible 2.19 for fedora 42 testing; support python 3.13 (#54)
+- ci: bump actions/checkout from 4 to 5 (#55)
+- ci: rollout several recent changes to CI testing (#57)
+- ci: support openSUSE Leap in qemu/kvm test matrix (#58)
+- ci: use the new epel feature to enable EPEL for testing farm (#59)
+- ci: use tox-lsr 3.12.0 for osbuild_config.yml feature (#61)
+- ci: use JSON format for __bootc_validation (#62)
+- ci: bump actions/setup-python from 5 to 6 (#63)
+- ci: bump actions/github-script from 7 to 8 (#64)
+- ci: bump actions/upload-artifact from 4 to 5 (#65)
+- ci: bump github/codeql-action from 3 to 4 (#66)
+- ci: use versioned upload-artifact instead of master; bump codeql-action to v4; bump upload-artifact to v5 (#67)
+- ci: bump tox-lsr to 3.13.0 (#68)
+- ci: bump tox-lsr to 3.14.0 - this moves standard-inventory-qcow2 to tox-lsr (#69)
+
 [1.0.3] - 2025-01-09
 --------------------
 
