@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
 ---
 __gfs2_repos:
-  - id: rhel-9-for-{{ ansible_architecture }}-resilientstorage-rpms
+  - id: rhel-9-for-{{ ansible_facts['architecture'] }}-resilientstorage-rpms
     name: Resilient Storage
