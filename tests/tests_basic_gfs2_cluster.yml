@@ -3,15 +3,17 @@
 - name: Basic usability test
   hosts: all
   # argument validation requires facts
-  gather_facts: true
   vars:
     common_cluster_name: testcluster
     mount_point: /mnt/test
-    gfs2_enable_repos: "{{ ansible_facts['distribution'] != 'RedHat' }}"
   tasks:
     - name: Skip this test if test system does not support
       meta: end_host
       when: lookup("env", "SYSTEM_ROLES_GFS2_CLUSTER_TEST") != "true"
+
+    - name: Set gfs2_enable_repos for use after clear_facts
+      ansible.builtin.set_fact:
+        gfs2_enable_repos: "{{ ansible_facts['distribution'] != 'RedHat' }}"
 
     - name: Run the test
       block:
@@ -61,8 +63,7 @@
                   - lvmlockd
 
         - name: Create gfs2 filesystem and cluster resources
-          ansible.builtin.include_role:
-            name: linux-system-roles.gfs2
+          ansible.builtin.include_tasks: tasks/run_role_with_clear_facts.yml
           vars:
             # noqa var-naming[no-role-prefix]
             _gfs2_test_allow_stonith_disabled: true
@@ -93,8 +94,7 @@
           changed_when: true
 
         - name: Re-run the role to test idempotency
-          ansible.builtin.include_role:
-            name: linux-system-roles.gfs2
+          ansible.builtin.include_tasks: tasks/run_role_with_clear_facts.yml
           vars:
             # noqa var-naming[no-role-prefix]
             _gfs2_test_allow_stonith_disabled: true
