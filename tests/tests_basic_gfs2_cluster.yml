@@ -11,6 +11,16 @@
       meta: end_host
       when: lookup("env", "SYSTEM_ROLES_GFS2_CLUSTER_TEST") != "true"
 
+    - name: See if /dev/log exists for the fingerprint check
+      ansible.builtin.stat:
+        path: /dev/log
+      register: __register_dev_log
+
+    - name: Set the start time for the journal search
+      ansible.builtin.set_fact:
+        __journal_start_time: "{{ ansible_facts['date_time']['date'] ~ ' ' ~ ansible_facts['date_time']['time'] }}"
+      when: __register_dev_log.stat.exists
+
     - name: Set gfs2_enable_repos for use after clear_facts
       ansible.builtin.set_fact:
         gfs2_enable_repos: "{{ ansible_facts['distribution'] != 'RedHat' }}"
@@ -76,6 +86,21 @@
                 lv: lv_gfs2_1
                 lv_size: 4G
                 mount_point: "{{ mount_point }}"
+
+        # look for the exact module invocation, not some other message that might contain the string
+        - name: Check system journal contains role fingerprints
+          ansible.builtin.shell:
+            executable: /bin/bash
+            cmd: >-
+              set -eo pipefail;
+              journalctl --since "{{ __journal_start_time }}" --no-pager |
+              grep -v " Invoked with" | grep "sr_fingerprint.*begin system_role:gfs2" ||
+              { echo ERROR: BEGIN fingerprint not found; exit 1; };
+              journalctl --since "{{ __journal_start_time }}" --no-pager |
+              grep -v " Invoked with" | grep "sr_fingerprint.*success system_role:gfs2" ||
+              { echo ERROR: SUCCESS fingerprint not found; exit 1; }
+          changed_when: false
+          when: __register_dev_log.stat.exists
 
         - name: Create a file on the gfs2 filesystem
           ansible.builtin.file:
