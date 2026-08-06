@@ -18,6 +18,8 @@ __gfs2_required_facts:
 __gfs2_required_facts_subsets: "{{ ['!all', '!min'] +
   __gfs2_required_facts }}"
 
+__gfs2_write_log_file: false
+
 # BEGIN - DO NOT EDIT THIS BLOCK - rh distros variables
 # Ansible distribution identifiers that the role treats like RHEL
 __gfs2_rh_distros:
