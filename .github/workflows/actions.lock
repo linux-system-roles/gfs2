@@ -26,7 +26,7 @@ workflows:
     '.github/workflows/citest.yml': []
     '.github/workflows/codeql.yml':
         - 'actions/checkout@v7.0.1'
-        - 'github/codeql-action@v4.37.9'
+        - 'github/codeql-action@v4.39.1'
     '.github/workflows/codespell.yml':
         - 'actions/checkout@v7.0.1'
         - 'codespell-project/actions-codespell@v2.4.3'
@@ -41,7 +41,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
     '.github/workflows/python-unit-test.yml':
         - 'actions/checkout@v7.0.1'
-        - 'actions/setup-python@v7.0.0'
+        - 'actions/setup-python@v7.1.0'
         - 'codecov/codecov-action@v7.1.1'
     '.github/workflows/qemu-kvm-integration-tests.yml':
         - 'actions/checkout@v7.0.1'
@@ -75,11 +75,6 @@ dependencies:
         commit: 'sha1-ed597411d8f924073f98dfc5c65a23a2325f34cd'
         owner_id: 44036562
         repo_id: 205262760
-    'actions/setup-python@v7.0.0':
-        ref: 'v7.0.0'
-        commit: 'sha1-5fda3b95a4ea91299a34e894583c3862153e4b97'
-        owner_id: 44036562
-        repo_id: 192625525
     'actions/setup-python@v7.1.0':
         ref: 'v7.1.0'
         commit: 'sha1-6d4fd22b20465ccc0f7354476588e8df7c9ca0e0'
@@ -102,9 +97,9 @@ dependencies:
         commit: 'sha1-e3258cca84ce02b0bb36a3d41f2c18f719a0cc1a'
         owner_id: 39140587
         repo_id: 263411323
-    'github/codeql-action@v4.37.9':
-        ref: 'v4.37.9'
-        commit: 'sha1-cdf488f595d80d6e07e03d4674febd5ab45fa938'
+    'github/codeql-action@v4.39.1':
+        ref: 'v4.39.1'
+        commit: 'sha1-9b3254085494b55a0f7c4c2b3d2d52cc712ce370'
         owner_id: 9919
         repo_id: 259445878
     'linux-system-roles/.github@main':
