@@ -39,10 +39,6 @@ workflows:
         - 'linux-system-roles/.github@main'
     '.github/workflows/pr-title-lint.yml':
         - 'actions/checkout@v7.0.1'
-    '.github/workflows/python-unit-test.yml':
-        - 'actions/checkout@v7.0.1'
-        - 'actions/setup-python@v7.1.0'
-        - 'codecov/codecov-action@v7.1.1'
     '.github/workflows/qemu-kvm-integration-tests.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
@@ -70,11 +66,6 @@ dependencies:
         commit: 'sha1-9000827ccba6bdab643e8b6fd33ac0654aef8333'
         owner_id: 44036562
         repo_id: 192626254
-    'actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd':
-        ref: 'v8.0.0'
-        commit: 'sha1-ed597411d8f924073f98dfc5c65a23a2325f34cd'
-        owner_id: 44036562
-        repo_id: 205262760
     'actions/setup-python@v7.1.0':
         ref: 'v7.1.0'
         commit: 'sha1-6d4fd22b20465ccc0f7354476588e8df7c9ca0e0'
@@ -85,13 +76,6 @@ dependencies:
         commit: 'sha1-cf430e030ddbb5b0abf93d22962f4752f3646cd9'
         owner_id: 44036562
         repo_id: 192625955
-    'codecov/codecov-action@v7.1.1':
-        ref: 'v7.1.1'
-        commit: 'sha1-303a32d7a59b442fa8d48b6a1cc6825c09c847a5'
-        owner_id: 8226205
-        repo_id: 200299178
-        uses:
-            - 'actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd'
     'codespell-project/actions-codespell@v2.4.3':
         ref: 'v2.4.3'
         commit: 'sha1-e3258cca84ce02b0bb36a3d41f2c18f719a0cc1a'
@@ -104,7 +88,7 @@ dependencies:
         repo_id: 259445878
     'linux-system-roles/.github@main':
         ref: 'main'
-        commit: 'sha1-40d52b121c13197831827e45113c1dce6afacf0c'
+        commit: 'sha1-df8dd90550279264a8ff13a2153ff747d79047a1'
         owner_id: 28014670
         repo_id: 320092621
     'sclorg/testing-farm-as-github-action@v4.3.1':
